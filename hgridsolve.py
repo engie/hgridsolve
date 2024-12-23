@@ -11,7 +11,11 @@ animals = [
     'Hippopotamus',
     'Iguana',
 ]
-vowel_animals = [a for a in animals if a[0] in ['A', 'E', 'I', 'O', 'U']]
+
+vowel_animals = []
+for a in animals:
+    if a[0] in ['A', 'E', 'I', 'O', 'U']:
+        vowel_animals.append(a)
 
 def positions():
     """
