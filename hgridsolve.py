@@ -181,6 +181,13 @@ def apply_rules(g):
     if count_of_known_positions_before_rules != len(known_positions(g)):
         apply_rules(g)
 
+# Depth first search of possibilities
+# Apply rules which narrow down possibilities for what can be in each cell
+# If any cell is empty, then we've gone the wrong way somewhere so return None
+# If all cells have only one possible value, then we've finished - return that completed grid
+# Else, for all the cells where we have multiple options build a list of guesses
+#     that are "guess cell (x,y) has value v"
+# Then create a grid where that guess is applied and recurse.
 def step(g, depth):
     apply_rules(g)
     if has_empty_cells(g):
