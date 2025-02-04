@@ -1,3 +1,4 @@
+from grid import print_3x3_grid
 import copy
 
 animals = [
@@ -31,17 +32,13 @@ def print_grid(g, title = None, depth=0):
     """
     Print out the grid, a bit nicely.
     """
-    print('\t' * depth, title)
-    for y in range(3):
-        for x in range(3):
-            if len(g[(x, y)]) == 0:
-                s = 'XXX'
-            else:
-                s = ','.join([s[0] for s in sorted(g[(x,y)])])
-            s = s + " " * (16-len(s))
-            print('\t' * depth, s, end='\t\t')
-        print()
-    print()
+    print(' ' * depth, title)
+    def content(x, y):
+        if len(g[(x, y)]) == 0:
+            return 'XXX'
+        else:
+            return ','.join([s for s in sorted(g[(x,y)])])
+    print_3x3_grid(content=content, depth=depth)
 
 def get_known(g, x, y):
     """
@@ -185,13 +182,10 @@ def apply_rules(g):
         apply_rules(g)
 
 def step(g, depth):
-    #print_grid(g, 'Depth: ' + str(depth), depth)
     apply_rules(g)
-    #print_grid(g, 'After rules', depth)
     if has_empty_cells(g):
         return None
     if finished(g):
-        print('Finished')
         return g
 
     guesses = []
@@ -211,18 +205,14 @@ def step(g, depth):
 
 # Grid starts with all the animals as possible for all the cells
 grid = {(x, y) : animals.copy() for x, y in positions()}
-print_grid(grid, 'Start with a full grid')
-print('Setting Goat & Hippo')
 grid[(1, 1)] = ['Goat']
 grid[(2, 2)] = ['Hippopotamus']
 
-print()
 rule_alligator_in_bottom_row(grid)
 rule_duck_not_on_bottom(grid)
 rule_fox_not_in_third_col(grid)
 rule_iguana_is_in_corner(grid)
-print_grid(grid, 'Cleared obvious rules')
 
 result = step(grid, 0)
 assert(result != None)
-print_grid(result, 'Found solution')
+print_grid(result)
